@@ -51,7 +51,7 @@ const faqs = [
 
 export default function Home() {
   const [status, setStatus] = useState('');
-  const calendlyUrl = 'https://calendly.com/mbautomate/free-consultation';
+  const calendlyUrl = 'https://calendly.com/hello-mbautomate/free-consultation';
 
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
