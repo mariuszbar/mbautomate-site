@@ -25,7 +25,7 @@ const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.6, ease: 'easeOut' }
+  transition: { duration: 0.6, ease: 'easeOut' as const }
 };
 
 const services = [
@@ -109,7 +109,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, scale: .94, rotate: 1 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: .8, ease: 'easeOut' }} className="glass rounded-[2rem] p-4 shadow-2xl">
+          <motion.div initial={{ opacity: 0, scale: .94, rotate: 1 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: .8, ease: 'easeOut' as const }} className="glass rounded-[2rem] p-4 shadow-2xl">
             <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-5">
               <div className="mb-5 flex gap-2"><i className="h-3 w-3 rounded-full bg-slate-600"/><i className="h-3 w-3 rounded-full bg-slate-600"/><i className="h-3 w-3 rounded-full bg-slate-600"/></div>
               <div className="grid gap-4 md:grid-cols-[.55fr_1fr]">
