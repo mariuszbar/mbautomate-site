@@ -57,23 +57,18 @@ export default function Home() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+    data.append('access_key', '4ee1690c-608a-47a7-9349-a602fdc867ad');
 
-    if (endpoint) {
-      const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-      if (res.ok) {
-        setStatus('Thanks. Your message has been sent.');
-        form.reset();
-      } else {
-        setStatus('Something went wrong. Please email hello@mbautomate.com.');
-      }
-      return;
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: data
+    });
+    if (res.ok) {
+      setStatus('Thanks. Your message has been sent.');
+      form.reset();
+    } else {
+      setStatus('Something went wrong. Please email hello@mbautomate.com.');
     }
-
-    const name = encodeURIComponent(String(data.get('name') || ''));
-    const email = encodeURIComponent(String(data.get('email') || ''));
-    const message = encodeURIComponent(String(data.get('message') || ''));
-    window.location.href = `mailto:hello@mbautomate.com?subject=Free consultation request&body=Name: ${name}%0AEmail: ${email}%0A%0AMessage:%0A${message}`;
   }
 
   return (
@@ -213,7 +208,7 @@ export default function Home() {
               <textarea name="message" required rows={5} placeholder="What process should AI automate for you?" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
               <button className="rounded-2xl bg-violet-600 px-6 py-4 font-black text-white transition hover:bg-violet-500">Send message</button>
               {status && <p className="text-sm font-semibold text-slate-700">{status}</p>}
-              <p className="text-sm text-slate-500"><ShieldCheck className="mr-1 inline h-4 w-4" /> To make this form submit without opening email, add your Formspree endpoint to NEXT_PUBLIC_FORMSPREE_ENDPOINT.</p>
+
             </div>
           </motion.form>
         </div>
