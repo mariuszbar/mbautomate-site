@@ -187,14 +187,15 @@ export default function Home() {
           <motion.div {...fadeUp} className="rounded-[2rem] bg-slate-950 p-8 text-white md:p-10">
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">Booking calendar</p>
             <h2 className="mt-4 text-4xl font-black">Book a free automation audit</h2>
-            <p className="mt-4 leading-8 text-slate-300">Use this section for Calendly. Replace the link in the code with your real Calendly URL.</p>
-            <div className="mt-8 grid min-h-80 place-items-center rounded-3xl border border-white/10 bg-white/5 p-6 text-center">
-              <div>
-                <Calendar className="mx-auto h-14 w-14 text-violet-300" />
-                <p className="mt-4 text-2xl font-black">Calendly embed placeholder</p>
-                <p className="mt-2 text-slate-300">Current link: {calendlyUrl}</p>
-                <a href={calendlyUrl} className="mt-6 inline-flex rounded-2xl bg-violet-600 px-6 py-4 font-black text-white">Open calendar</a>
-              </div>
+            <p className="mt-4 leading-8 text-slate-300">Pick a time that works for you — 30 minutes, no pressure.</p>
+            <div className="mt-8 overflow-hidden rounded-3xl" style={{ height: '700px' }}>
+              <iframe
+                src={`${calendlyUrl}?embed_domain=mbautomate.com&embed_type=Inline&hide_landing_page_details=1&hide_gdpr_banner=1`}
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                title="Book a Free Consultation"
+              />
             </div>
           </motion.div>
 
