@@ -14,7 +14,27 @@ CTA: Encourage users to book a free automation audit or email hello@mbautomate.c
 Tone: concise, confident, helpful, SaaS-style, no hype.
 `;
 
+const SHEETS_URL =
+  'https://script.google.com/macros/s/AKfycbw-5NDrPyD7MhFediGnA1Hy7JMxgq3qS67gSxYm72y_E6tauwtkNgludfiPtGmNX_kC/exec';
+
 type Message = { role: 'user' | 'assistant' | 'system'; content: string };
+
+async function saveLeadToSheets(email: string, message: string) {
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Chatbot Lead',
+        email: email || 'no-email',
+        message: message || 'no-message',
+        date: new Date().toISOString(),
+      }),
+    });
+  } catch (err) {
+    console.error('Sheets save error:', err);
+  }
+}
 
 function fallbackReply(question: string) {
   const q = question.toLowerCase();
@@ -46,11 +66,18 @@ function fallbackReply(question: string) {
   return 'MB Automate helps businesses save time with AI chatbots, workflow automation, and AI agents. Ask me about pricing, launch time, examples, or booking a free automation audit.';
 }
 
+const EMAIL_REGEX = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const messages: Message[] = Array.isArray(body.messages) ? body.messages.slice(-8) : [];
     const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user')?.content || '';
+
+    // Detect email in any user message and save to Sheets
+    if (EMAIL_REGEX.test(lastUserMessage)) {
+      await saveLeadToSheets(lastUserMessage.match(EMAIL_REGEX)?.[0] || '', lastUserMessage);
+    }
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json({ reply: fallbackReply(lastUserMessage) });
