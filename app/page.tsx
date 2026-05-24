@@ -17,14 +17,14 @@ import {
   Workflow,
   Zap,
   X,
-  Send
+  Send,
 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
+  viewport: { once: true, margin: '-80px' as const },
   transition: { duration: 0.6, ease: 'easeOut' as const }
 };
 
@@ -151,7 +151,7 @@ export default function Home() {
             <h2 className="mt-4 text-4xl font-black md:text-6xl">From messy process to automated system.</h2>
           </motion.div>
           <div className="mt-12 grid gap-5 md:grid-cols-4">
-            {[['Audit', 'We find the repetitive work costing you time.'], ['Build', 'We create the chatbot, workflow, or agent.'], ['Connect', 'We integrate your tools and data.'], ['Launch', 'We test, improve, and hand it over.']].map(([t,d],i)=><motion.div {...fadeUp} transition={{duration:.55,delay:i*.08}} key={t} className="glass rounded-3xl p-6"><div className="mb-6 grid h-12 w-12 place-items-center rounded-2xl bg-violet-600 font-black">{i+1}</div><h3 className="text-2xl font-black">{t}</h3><p className="mt-3 leading-7 text-slate-300">{d}</p></motion.div>)}
+            {[['Audit', 'We find the repetitive work costing you time.'], ['Build', 'We create the chatbot, workflow, or agent.'], ['Connect', 'We integrate your tools and data.'], ['Launch', 'We test, improve, and hand it over.']].map(([t,d],i)=><motion.div {...fadeUp} transition={{duration:.55,delay:i*.08,ease:'easeOut' as const}} key={t} className="glass rounded-3xl p-6"><div className="mb-6 grid h-12 w-12 place-items-center rounded-2xl bg-violet-600 font-black">{i+1}</div><h3 className="text-2xl font-black">{t}</h3><p className="mt-3 leading-7 text-slate-300">{d}</p></motion.div>)}
           </div>
         </div>
       </section>
