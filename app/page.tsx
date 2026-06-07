@@ -17,36 +17,101 @@ import {
   Workflow,
   Zap,
   X,
-  Send
+  Send,
 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
+  viewport: { once: true, margin: '-80px' as const },
   transition: { duration: 0.6, ease: 'easeOut' as const }
 };
 
 const services = [
-  { icon: MessageCircle, title: 'AI Chatbots', text: 'Automate customer conversations, lead capture, support, FAQs, and appointment requests 24/7.' },
-  { icon: Workflow, title: 'Workflow Automation', text: 'Connect CRMs, forms, emails, calendars, sheets, invoices, and internal tools into one smooth flow.' },
-  { icon: Bot, title: 'AI Agents', text: 'Deploy AI systems that qualify leads, summarize calls, draft replies, update records, and trigger actions.' }
+  { icon: MessageCircle, title: 'Content Creation', text: 'We create engaging posts and captions tailored to your business and audience.' },
+  { icon: Workflow, title: 'Custom Graphics', text: 'Branded graphics designed to make your business stand out on social media.' },
+  { icon: Bot, title: 'Social Media Management', text: 'We manage your content calendar, scheduling and posting across Facebook and Instagram.' }
 ];
 
-const useCases = ['Real estate lead routing', 'Barber & clinic booking flows', 'Ecommerce support automation', 'Agency client onboarding', 'Invoice & admin automation', 'Local business missed-call recovery'];
+const useCases = ['Barbershops & Salons', 'Restaurants & Cafés', 'Trades & Home Services', 'Gyms & Fitness Studios', 'Clinics & Beauty Businesses', 'Local Shops'];
+
+const portfolioItems = [
+  { title: 'Barbershop Promo', type: 'Facebook & Instagram post', text: 'Fresh fade offer, booking reminder and local hashtags for a Glasgow barber.' },
+  { title: 'Restaurant Special', type: 'Food promotion', text: 'Weekend menu highlight designed to drive bookings and takeaway orders.' },
+  { title: 'Beauty Clinic Post', type: 'Service awareness', text: 'Clean branded graphic explaining a treatment and encouraging enquiries.' },
+  { title: 'Trades Business Update', type: 'Project showcase', text: 'Before-and-after style post to build trust and show recent work.' },
+  { title: 'Gym Challenge', type: 'Community content', text: 'Monthly fitness challenge post designed to increase engagement.' },
+  { title: 'Local Shop Offer', type: 'Promotion post', text: 'Simple product promotion with a clear call-to-action and local reach.' }
+];
+
+const testimonials = [
+  {
+    quote: 'We finally have consistent content every week. Our Facebook page looks professional and saves us hours.',
+    name: 'Michael',
+    role: 'Barbershop Owner'
+  },
+  {
+    quote: 'The graphics look great and the monthly content calendar keeps everything organised.',
+    name: 'Sarah',
+    role: 'Beauty Clinic'
+  },
+  {
+    quote: 'We stopped worrying about social media and started getting more enquiries.',
+    name: 'James',
+    role: 'Local Trades Business'
+  }
+];
 
 const plans = [
-  { name: 'Starter', price: '£499+', desc: 'One automation or chatbot MVP.', items: ['Discovery call', '1 core workflow', 'Basic AI prompt setup', 'Handover video'], highlight: false },
-  { name: 'Growth', price: '£1,500+', desc: 'Complete automation system for a business process.', items: ['Automation strategy', '3-5 workflows', 'CRM/email/calendar integrations', 'Testing & optimisation', '30-day support'], highlight: true },
-  { name: 'Scale', price: 'Custom', desc: 'AI agents and ongoing automation partner.', items: ['AI agent architecture', 'Advanced integrations', 'Dashboards & reporting', 'Monthly optimisation', 'Priority support'], highlight: false }
+  {
+    name: 'Starter',
+    price: '£49/mo',
+    desc: 'Ideal for local businesses that want regular social media content without the hassle.',
+    items: [
+      '12 posts per month',
+      '12 custom graphics included',
+      'Facebook & Instagram scheduling',
+      'Monthly content calendar',
+      'Email support'
+    ],
+    highlight: false
+  },
+  {
+    name: 'Pro',
+    price: '£99/mo',
+    desc: 'For businesses ready to grow their online presence and attract more customers.',
+    items: [
+      '30 posts per month',
+      '30 custom graphics included',
+      'Facebook & Instagram scheduling',
+      'Hashtag research',
+      'Monthly content calendar',
+      'Monthly performance report'
+    ],
+    highlight: true
+  },
+  {
+    name: 'Premium',
+    price: '£149/mo',
+    desc: 'Fully managed social media with premium graphics and priority support.',
+    items: [
+      '30 posts per month',
+      '30 custom branded graphics',
+      'Facebook & Instagram scheduling',
+      'Hashtag research',
+      'Monthly content calendar',
+      'Priority support'
+    ],
+    highlight: false
+  }
 ];
 
 const faqs = [
-  { q: 'Who is MB Automate for?', a: 'Service businesses, agencies, local companies, ecommerce brands, and operators who want to reduce manual work and respond to leads faster.' },
-  { q: 'Do I need to know AI or coding?', a: 'No. We map the process, build the automation, connect your tools, test it, and show you how to use it.' },
-  { q: 'What tools can you connect?', a: 'Common setups include websites, forms, Gmail, Google Sheets, Calendly, CRMs, Stripe, Slack, Notion, Airtable, Make, n8n, Zapier, and OpenAI.' },
-  { q: 'How fast can we launch?', a: 'A focused MVP can usually be built in 3-7 days once the process and access are clear.' }
+  { q: 'What types of businesses do you work with?', a: 'We work with local businesses including barbershops, restaurants, gyms, beauty clinics, tradespeople and local shops.' },
+  { q: 'Do I need to provide photos?', a: 'Photos help create more personalised content, but they are not required. We can also create branded graphics and promotional posts for your business.' },
+  { q: 'What is included in the monthly plans?', a: 'Depending on the package, we create posts, graphics, captions, content calendars and social media scheduling for Facebook and Instagram.' },
+  { q: 'Can I cancel anytime?', a: 'Yes. There are no contracts and you can cancel your subscription at any time.' }
 ];
 
 export default function Home() {
@@ -91,21 +156,21 @@ export default function Home() {
         <div id="top" className="mx-auto grid max-w-7xl items-center gap-14 px-6 pb-24 pt-16 md:grid-cols-[1.05fr_.95fr] md:pt-28">
           <motion.div {...fadeUp}>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-violet-100">
-              <Zap className="h-4 w-4 text-violet-300" /> AI automation for businesses that want speed
+              <Zap className="h-4 w-4 text-violet-300" /> Social media content for local businesses
             </div>
             <h1 className="max-w-4xl text-6xl font-black leading-[.95] tracking-tight md:text-8xl">
               <span className="gradient-text">MB Automate</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-3xl font-bold leading-tight text-white md:text-5xl">AI Automation for Modern Businesses</p>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">We build AI chatbots, workflows, and agents that capture leads, reduce admin, and help your team move faster.</p>
+            <p className="mt-6 max-w-2xl text-3xl font-bold leading-tight text-white md:text-5xl">We Create Content That Brings You More Customers</p>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">We create posts, graphics and content calendars that help local businesses stay visible, build trust and attract more customers.</p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <a href="#booking" className="group inline-flex items-center justify-center rounded-2xl bg-violet-600 px-7 py-4 text-lg font-bold shadow-glow transition hover:scale-[1.02] hover:bg-violet-500">
                 <Calendar className="mr-2 h-5 w-5" /> Book Free Consultation <ArrowRight className="ml-2 h-5 w-5 transition group-hover:translate-x-1" />
               </a>
-              <a href="#services" className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-7 py-4 text-lg font-bold text-white transition hover:bg-white/15">Explore services</a>
+              <a href="#pricing" className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-7 py-4 text-lg font-bold text-white transition hover:bg-white/15">View Packages</a>
             </div>
             <div className="mt-8 flex flex-wrap gap-3 text-sm text-slate-300">
-              {['Save hours weekly', 'Respond faster', 'Scale operations'].map((x) => <span key={x} className="rounded-full border border-white/10 bg-white/5 px-4 py-2"><Check className="mr-2 inline h-4 w-4 text-violet-300" />{x}</span>)}
+              {['12–30 posts monthly', 'Custom graphics included', 'No contracts'].map((x) => <span key={x} className="rounded-full border border-white/10 bg-white/5 px-4 py-2"><Check className="mr-2 inline h-4 w-4 text-violet-300" />{x}</span>)}
             </div>
           </motion.div>
 
@@ -114,12 +179,12 @@ export default function Home() {
               <div className="mb-5 flex gap-2"><i className="h-3 w-3 rounded-full bg-slate-600"/><i className="h-3 w-3 rounded-full bg-slate-600"/><i className="h-3 w-3 rounded-full bg-slate-600"/></div>
               <div className="grid gap-4 md:grid-cols-[.55fr_1fr]">
                 <div className="space-y-3">
-                  {['Lead captured', 'AI qualified', 'CRM updated', 'Follow-up sent'].map((x,i)=><motion.div key={x} initial={{opacity:0,x:-12}} animate={{opacity:1,x:0}} transition={{delay:.25+i*.12}} className="rounded-2xl bg-white/10 p-4 text-sm text-slate-200"><Check className="mr-2 inline h-4 w-4 text-green-300" />{x}</motion.div>)}
+                  {['Content planned', 'Graphics created', 'Posts scheduled', 'Calendar ready'].map((x,i)=><motion.div key={x} initial={{opacity:0,x:-12}} animate={{opacity:1,x:0}} transition={{delay:.25+i*.12}} className="rounded-2xl bg-white/10 p-4 text-sm text-slate-200"><Check className="mr-2 inline h-4 w-4 text-green-300" />{x}</motion.div>)}
                 </div>
                 <div className="rounded-3xl bg-gradient-to-br from-violet-600/30 to-cyan-500/10 p-6">
                   <Bot className="mb-4 h-12 w-12 text-violet-200" />
-                  <p className="text-2xl font-black">AI Operations Hub</p>
-                  <p className="mt-2 text-slate-300">Chat, email, CRM, booking, reporting, and AI actions connected.</p>
+                  <p className="text-2xl font-black">Monthly Content Plan</p>
+                  <p className="mt-2 text-slate-300">Content planning, graphics, scheduling and monthly content management.</p>
                   <div className="mt-6 h-28 rounded-2xl border border-white/10 bg-slate-950/60 p-4">
                     <div className="h-2 w-2/3 rounded bg-violet-400" />
                     <div className="mt-4 h-2 w-5/6 rounded bg-white/20" />
@@ -136,8 +201,8 @@ export default function Home() {
       <section id="services" className="bg-white px-6 py-24 text-slate-950">
         <motion.div {...fadeUp} className="mx-auto max-w-7xl text-center">
           <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">What we do</p>
-          <h2 className="mt-4 text-4xl font-black md:text-6xl">Full SaaS-style AI automation services</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Built for businesses that need practical automation, not AI hype.</p>
+          <h2 className="mt-4 text-4xl font-black md:text-6xl">Social media content for local businesses</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Done-for-you content creation, graphics and social media management.</p>
           <div className="mt-14 grid gap-7 md:grid-cols-3">
             {services.map((s) => <Service key={s.title} {...s} />)}
           </div>
@@ -148,10 +213,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">How it works</p>
-            <h2 className="mt-4 text-4xl font-black md:text-6xl">From messy process to automated system.</h2>
+            <h2 className="mt-4 text-4xl font-black md:text-6xl">From idea to consistent social media growth.</h2>
           </motion.div>
           <div className="mt-12 grid gap-5 md:grid-cols-4">
-            {[['Audit', 'We find the repetitive work costing you time.'], ['Build', 'We create the chatbot, workflow, or agent.'], ['Connect', 'We integrate your tools and data.'], ['Launch', 'We test, improve, and hand it over.']].map(([t,d],i)=><motion.div {...fadeUp} transition={{duration:.55,delay:i*.08}} key={t} className="glass rounded-3xl p-6"><div className="mb-6 grid h-12 w-12 place-items-center rounded-2xl bg-violet-600 font-black">{i+1}</div><h3 className="text-2xl font-black">{t}</h3><p className="mt-3 leading-7 text-slate-300">{d}</p></motion.div>)}
+            {[['Discovery Call', 'We learn about your business, audience and goals.'], ['Content Planning', 'We create your monthly content calendar and posting strategy.'], ['Design & Creation', 'We write captions and create branded graphics for your business.'], ['Schedule & Grow', 'We schedule your content and keep your social media active every month.']].map(([t,d],i)=><motion.div {...fadeUp} transition={{duration:.55,delay:i*.08,ease:'easeOut' as const}} key={String(t)} className="glass rounded-3xl p-6"><div className="mb-6 grid h-12 w-12 place-items-center rounded-2xl bg-violet-600 font-black">{i+1}</div><h3 className="text-2xl font-black">{t}</h3><p className="mt-3 leading-7 text-slate-300">{d}</p></motion.div>)}
           </div>
         </div>
       </section>
@@ -160,8 +225,8 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="grid gap-10 md:grid-cols-[.8fr_1.2fr] md:items-center">
             <div>
-              <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">Use cases</p>
-              <h2 className="mt-4 text-4xl font-black md:text-5xl">Automation for real business problems.</h2>
+              <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">PERFECT FOR</p>
+              <h2 className="mt-4 text-4xl font-black md:text-5xl">Content ideas for local businesses.</h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {useCases.map((x)=><div key={x} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 font-semibold"><MousePointerClick className="mr-2 inline h-5 w-5 text-violet-600" />{x}</div>)}
@@ -170,14 +235,62 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="portfolio" className="bg-slate-50 px-6 py-24 text-slate-950">
+        <div className="mx-auto max-w-7xl">
+          <motion.div {...fadeUp} className="text-center">
+            <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">Recent work</p>
+            <h2 className="mt-4 text-4xl font-black md:text-6xl">Examples of content we create.</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Sample post ideas, graphics and promotions for local businesses.</p>
+          </motion.div>
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
+            {portfolioItems.map((item, i) => (
+              <motion.div {...fadeUp} transition={{duration:.55,delay:i*.06,ease:'easeOut' as const}} key={item.title} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/70">
+                <div className="mb-5 flex h-44 items-end rounded-3xl bg-gradient-to-br from-violet-100 via-slate-100 to-cyan-100 p-5">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[.18em] text-violet-600">{item.type}</p>
+                    <h3 className="mt-2 text-2xl font-black">{item.title}</h3>
+                  </div>
+                </div>
+                <p className="leading-7 text-slate-600">{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="pricing" className="bg-slate-950 px-6 py-24">
         <div className="mx-auto max-w-7xl text-center">
           <motion.div {...fadeUp}>
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">Pricing</p>
-            <h2 className="mt-4 text-4xl font-black md:text-6xl">Simple packages. Custom systems.</h2>
+            <h2 className="mt-4 text-4xl font-black md:text-6xl">Social media content for local businesses.</h2>
           </motion.div>
           <div className="mt-14 grid gap-7 md:grid-cols-3">
             {plans.map((p)=><motion.div {...fadeUp} key={p.name} className={`rounded-[2rem] p-7 text-left ${p.highlight?'bg-violet-600 shadow-glow':'glass'}`}><p className="text-xl font-black">{p.name}</p><p className="mt-4 text-4xl font-black">{p.price}</p><p className="mt-3 min-h-14 text-slate-200">{p.desc}</p><div className="my-7 h-px bg-white/15"/><ul className="space-y-3">{p.items.map(i=><li key={i} className="flex gap-3 text-slate-100"><Check className="mt-1 h-5 w-5 shrink-0" />{i}</li>)}</ul><a href="#booking" className="mt-8 inline-flex w-full justify-center rounded-2xl bg-white px-5 py-4 font-black text-slate-950">Book call</a></motion.div>)}
+          </div>
+          <div className="mt-8 text-center text-sm text-slate-400">
+            ✓ No contracts • ✓ Cancel anytime • ✓ Setup included
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-6 py-24 text-slate-950">
+        <div className="mx-auto max-w-7xl">
+          <motion.div {...fadeUp} className="text-center">
+            <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">Client results</p>
+            <h2 className="mt-4 text-4xl font-black md:text-6xl">What local businesses say.</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Early example feedback for the type of results this service is designed to deliver.</p>
+          </motion.div>
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <motion.div {...fadeUp} transition={{duration:.55,delay:i*.08,ease:'easeOut' as const}} key={t.name} className="rounded-[2rem] border border-slate-200 bg-slate-50 p-7 shadow-xl shadow-slate-200/70">
+                <p className="text-xl font-black text-violet-600">★★★★★</p>
+                <p className="mt-5 leading-8 text-slate-700">“{t.quote}”</p>
+                <div className="mt-6">
+                  <p className="font-black text-slate-950">{t.name}</p>
+                  <p className="text-sm text-slate-500">{t.role}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -186,8 +299,9 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2">
           <motion.div {...fadeUp} className="rounded-[2rem] bg-slate-950 p-8 text-white md:p-10">
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">Booking calendar</p>
-            <h2 className="mt-4 text-4xl font-black">Book a free automation audit</h2>
-            <p className="mt-4 leading-8 text-slate-300">Pick a time that works for you — 30 minutes, no pressure.</p>
+            <h2 className="mt-4 text-4xl font-black">Book a free social media strategy call</h2>
+            <p className="mt-4 leading-8 text-slate-300">Pick a time that works for you — 30 minutes, no pressure.
+We'll discuss your business, content needs and social media goals.</p>
             <div className="mt-8 overflow-hidden rounded-3xl" style={{ height: '700px' }}>
               <iframe
                 src={`${calendlyUrl}?embed_domain=mbautomate.com&embed_type=Inline&hide_landing_page_details=1&hide_gdpr_banner=1`}
@@ -201,13 +315,13 @@ export default function Home() {
 
           <motion.form {...fadeUp} onSubmit={submitForm} className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8 shadow-2xl shadow-slate-200 md:p-10">
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-600">Real contact form</p>
-            <h2 className="mt-4 text-4xl font-black">Tell us what you want to automate</h2>
+            <h2 className="mt-4 text-4xl font-black">Tell us about your business</h2>
             <div className="mt-8 grid gap-4">
               <input name="name" required placeholder="Your name" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
               <input name="email" required type="email" placeholder="Your email" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
               <input name="company" placeholder="Company / website" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
-              <textarea name="message" required rows={5} placeholder="What process should AI automate for you?" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
-              <button className="rounded-2xl bg-violet-600 px-6 py-4 font-black text-white transition hover:bg-violet-500">Send message</button>
+              <textarea name="message" required rows={5} placeholder="Tell us about your business and social media goals" className="rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none focus:border-violet-500" />
+              <button className="rounded-2xl bg-violet-600 px-6 py-4 font-black text-white transition hover:bg-violet-500">Book Free Consultation</button>
               {status && <p className="text-sm font-semibold text-slate-700">{status}</p>}
 
             </div>
@@ -219,7 +333,7 @@ export default function Home() {
         <div className="mx-auto max-w-4xl">
           <motion.div {...fadeUp} className="text-center">
             <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">FAQ</p>
-            <h2 className="mt-4 text-4xl font-black md:text-6xl">Questions before we automate?</h2>
+            <h2 className="mt-4 text-4xl font-black md:text-6xl">Before You Get Started</h2>
           </motion.div>
           <div className="mt-12 space-y-4">
             {faqs.map((f)=><details key={f.q} className="group rounded-3xl border border-white/10 bg-white/5 p-6"><summary className="flex cursor-pointer list-none items-center justify-between text-xl font-black">{f.q}<ChevronDown className="h-6 w-6 transition group-open:rotate-180" /></summary><p className="mt-4 leading-8 text-slate-300">{f.a}</p></details>)}
@@ -227,12 +341,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-slate-950 px-6 py-24">
+        <motion.div {...fadeUp} className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-10 text-center shadow-2xl md:p-14">
+          <p className="text-sm font-black uppercase tracking-[.28em] text-violet-300">Ready to grow?</p>
+          <h2 className="mt-4 text-4xl font-black md:text-6xl">Ready to stay active on social media?</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">Let's create content that keeps your business visible every month.</p>
+          <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+            <a href="#booking" className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-7 py-4 text-lg font-bold shadow-glow transition hover:scale-[1.02] hover:bg-violet-500">
+              Book Free Consultation
+            </a>
+            <a href="#pricing" className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-7 py-4 text-lg font-bold text-white transition hover:bg-white/15">
+              View Plans
+            </a>
+          </div>
+        </motion.div>
+      </section>
+
       <AIAssistant />
 
       <footer className="border-t border-white/10 bg-slate-950 px-6 py-10">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-slate-400 md:flex-row">
           <p className="font-bold text-white">MB Automate</p>
-          <p>AI Automation for Modern Businesses</p>
+          <p>Done-for-you content creation, graphics & scheduling.</p>
           <a href="mailto:hello@mbautomate.com" className="hover:text-white">hello@mbautomate.com</a>
         </div>
       </footer>
@@ -252,7 +382,7 @@ function AIAssistant() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Hi, I am the MB Automate assistant. Ask me about AI chatbots, workflow automation, AI agents, pricing, or booking a consultation.'
+      content: 'Hi, I am the MB Automate assistant. Ask me about social media content, monthly plans, graphics, pricing, or booking a consultation.'
     }
   ]);
 
@@ -282,9 +412,9 @@ function AIAssistant() {
   }
 
   const quickQuestions = [
-    'What can you automate?',
+    'What is included?',
     'How much does it cost?',
-    'How fast can we launch?',
+    'Do you create graphics?',
     'Book a consultation'
   ];
 
@@ -300,7 +430,7 @@ function AIAssistant() {
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15"><Bot className="h-5 w-5" /></div>
               <div>
-                <p className="font-black">MB Automate AI</p>
+                <p className="font-black">MB Automate</p>
                 <p className="text-xs text-violet-100">Answers questions 24/7</p>
               </div>
             </div>
