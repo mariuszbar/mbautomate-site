@@ -40,23 +40,23 @@ function fallbackReply(question: string) {
   const q = question.toLowerCase();
 
   if (q.includes('price') || q.includes('cost') || q.includes('pricing') || q.includes('much')) {
-    return 'Pricing starts at £499+ for a focused chatbot or automation MVP. Growth systems usually start at £1,500+ and include multiple workflows, integrations, testing, and support. For a custom AI agent setup, book a free automation audit.';
+    return 'Our monthly plans start from £49/month. Most businesses choose the £99/month Pro plan, while £149/month includes premium graphics and priority support. All plans include setup, no contracts and can be cancelled anytime.';
   }
 
   if (q.includes('book') || q.includes('call') || q.includes('consultation') || q.includes('audit')) {
-    return 'You can book a free automation audit from the booking section on this page. We will review your process, find automation opportunities, and suggest the fastest MVP.';
+    return 'Book a free consultation and we will discuss your business, social media goals and recommend the best content plan for you.';
   }
 
   if (q.includes('how long') || q.includes('fast') || q.includes('launch') || q.includes('time')) {
-    return 'A focused MVP can usually launch in 3-7 days once the process, tools, and access are clear. Larger systems depend on integrations and complexity.';
+    return 'Most clients are onboarded within 2-5 business days. Once we receive access to your Facebook and Instagram accounts, we can start creating and scheduling content straight away.';
   }
 
   if (q.includes('chatbot') || q.includes('bot')) {
-    return 'We build AI chatbots that answer FAQs, capture leads, qualify customers, handle support questions, and route enquiries to email, CRM, or booking tools.';
+    return 'Our focus is social media management for local businesses, including content creation, custom graphics, hashtag research and post scheduling.';
   }
 
   if (q.includes('workflow') || q.includes('automate') || q.includes('automation')) {
-    return 'We automate repetitive business processes such as lead follow-up, CRM updates, email replies, booking flows, invoice/admin tasks, reporting, and internal notifications.';
+    return 'We help local businesses stay active on social media by creating posts, graphics, content calendars, hashtag research and scheduling content for Facebook and Instagram.';
   }
 
   if (q.includes('agent') || q.includes('ai agent')) {

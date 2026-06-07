@@ -260,6 +260,10 @@ img, video {
   display: none;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .fixed {
   position: fixed;
 }
@@ -426,6 +430,10 @@ img, video {
   height: 1rem;
 }
 
+.h-44 {
+  height: 11rem;
+}
+
 .h-5 {
   height: 1.25rem;
 }
@@ -534,6 +542,10 @@ img, video {
   max-width: 56rem;
 }
 
+.max-w-5xl {
+  max-width: 64rem;
+}
+
 .max-w-7xl {
   max-width: 80rem;
 }
@@ -562,6 +574,10 @@ img, video {
   flex-shrink: 0;
 }
 
+.grow {
+  flex-grow: 1;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -580,6 +596,10 @@ img, video {
 
 .place-items-center {
   place-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
 }
 
 .items-center {
@@ -624,6 +644,10 @@ img, video {
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .gap-7 {
@@ -806,6 +830,12 @@ img, video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-violet-100 {
+  --tw-gradient-from: #ede9fe var(--tw-gradient-from-position);
+  --tw-gradient-to: #ede9fe00 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-violet-600\/30 {
   --tw-gradient-from: #7c3aed4d var(--tw-gradient-from-position);
   --tw-gradient-to: #7c3aed00 var(--tw-gradient-to-position);
@@ -818,12 +848,25 @@ img, video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.via-slate-100 {
+  --tw-gradient-to: #f1f5f900  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #f1f5f9 var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.to-cyan-100 {
+  --tw-gradient-to: #cffafe var(--tw-gradient-to-position);
+}
+
 .to-cyan-500\/10 {
   --tw-gradient-to: #06b6d41a var(--tw-gradient-to-position);
 }
 
 .to-violet-500 {
   --tw-gradient-to: #8b5cf6 var(--tw-gradient-to-position);
+}
+
+.p-10 {
+  padding: 2.5rem;
 }
 
 .p-2 {
@@ -1001,6 +1044,10 @@ img, video {
   line-height: 1.25;
 }
 
+.tracking-\[\.18em\] {
+  letter-spacing: .18em;
+}
+
 .tracking-\[\.28em\] {
   letter-spacing: .28em;
 }
@@ -1042,6 +1089,11 @@ img, video {
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
 }
 
 .text-slate-600 {
@@ -1315,6 +1367,10 @@ body {
 
   .md\:p-10 {
     padding: 2.5rem;
+  }
+
+  .md\:p-14 {
+    padding: 3.5rem;
   }
 
   .md\:pt-28 {
