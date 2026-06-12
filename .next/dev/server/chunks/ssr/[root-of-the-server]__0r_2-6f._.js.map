@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///D:/MBAutomate/mbautomate-premium-site-with-chatbot/mbautomate-premium-site/app/privacy-policy/page.tsx"],"sourcesContent":["export default function PrivacyPolicy() {\n  return (\n    <main className=\"max-w-4xl mx-auto p-8\">\n      <h1>Privacy Policy</h1>\n      <p>Effective Date: June 2026</p>\n\n      <p>\n        MB Automate collects and processes information necessary to provide\n        automation, AI and social media services.\n      </p>\n\n      <p>\n        Users may request deletion of their data by contacting\n        contact@mbautomate.com.\n      </p>\n    </main>\n  );\n}"],"names":["PrivacyPolicy","className"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAKC,WAAU;;0BACd,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;0BAAE;;;;;;0BAEH,8OAAC;0BAAE;;;;;;0BAKH,8OAAC;0BAAE;;;;;;;;;;;;AAMT"}}]
+}

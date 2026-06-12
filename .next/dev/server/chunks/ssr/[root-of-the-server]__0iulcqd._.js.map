@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///D:/MBAutomate/mbautomate-premium-site-with-chatbot/mbautomate-premium-site/app/data-deletion/page.tsx"],"sourcesContent":["export default function DataDeletion() {\n  return (\n    <main className=\"max-w-4xl mx-auto p-8\">\n      <h1>Data Deletion Instructions</h1>\n\n      <p>\n        To request deletion of your data, email:\n        contact@mbautomate.com\n      </p>\n    </main>\n  );\n}"],"names":["DataDeletion","className"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAKC,WAAU;;0BACd,8OAAC;0BAAG;;;;;;0BAEJ,8OAAC;0BAAE;;;;;;;;;;;;AAMT"}}]
+}

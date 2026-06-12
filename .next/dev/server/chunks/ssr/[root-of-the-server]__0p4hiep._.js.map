@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///D:/MBAutomate/mbautomate-premium-site-with-chatbot/mbautomate-premium-site/app/terms-of-service/page.tsx"],"sourcesContent":["export default function TermsOfService() {\n  return (\n    <main className=\"max-w-4xl mx-auto p-8\">\n      <h1>Terms of Service</h1>\n\n      <p>\n        By using MB Automate services you agree to these terms.\n      </p>\n    </main>\n  );\n}"],"names":["TermsOfService","className"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAKC,WAAU;;0BACd,8OAAC;0BAAG;;;;;;0BAEJ,8OAAC;0BAAE;;;;;;;;;;;;AAKT"}}]
+}
