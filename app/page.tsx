@@ -123,11 +123,7 @@ export default function Home() {
     const form = e.currentTarget;
     const data = new FormData(form);
     data.append('access_key', '4ee1690c-608a-47a7-9349-a602fdc867ad');
-<<<<<<< HEAD
     data.append('subject', 'New MB Automate booking request');
-=======
-    data.append('subject', 'New Consultation Request');
->>>>>>> cf9a87aabcd69fa352831e8dad66a189fb1f6b75
     data.append('from_name', 'MB Automate Website');
 
     const res = await fetch('https://api.web3forms.com/submit', {
