@@ -1,79 +1,93 @@
-# MB Automate Premium Landing Page
+# MB Automate – Social Media Content for Local Businesses
 
-Premium Next.js landing page for mbautomate.com.
+Professional social media content creation for local businesses.
 
 ## Includes
-- SaaS-style homepage
-- Premium dark/light sections
-- Framer Motion animations
-- AI Chatbots, Workflow Automation, AI Agents
-- Process section
-- Use cases
-- Pricing
-- FAQ
-- Booking calendar placeholder
-- Contact form
+
+* Social media marketing landing page
+* Monthly content plans
+* Custom branded graphics
+* Content calendars
+* Facebook & Instagram post creation
+* Pricing section
+* FAQ section
+* Consultation booking form
+* Contact form with Web3Forms integration
+* Mobile responsive design
 
 ## Run locally
+
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000
-
-## Deploy to Vercel
-1. Upload this folder to GitHub or import it directly into Vercel.
-2. Deploy as a Next.js project.
-3. Add domain: mbautomate.com
-
-## Real contact form
-The form works now as a mailto fallback to hello@mbautomate.com.
-
-To make it submit without opening the email app:
-1. Create a free Formspree form.
-2. Copy your endpoint URL.
-3. In Vercel, add environment variable:
-   NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your-id
-4. Redeploy.
-
-## Booking calendar
-Replace this line in app/page.tsx:
-```ts
-const calendlyUrl = 'https://calendly.com/mbautomate/free-consultation';
-```
-with your real Calendly link.
-
-## AI Chatbot
-
-This version includes a floating chatbot in the bottom-right corner.
-
-It works in two modes:
-
-1. **Without OpenAI API key**  
-   The chatbot uses built-in business answers for pricing, services, launch time, AI chatbots, workflow automation, AI agents, and booking.
-
-2. **With OpenAI API key**  
-   Add this environment variable in Vercel:
-
-```bash
-OPENAI_API_KEY=your_openai_api_key
-```
-
-Optional:
-
-```bash
-OPENAI_MODEL=gpt-4o-mini
-```
-
-The API route is here:
+Open:
 
 ```txt
-app/api/chat/route.ts
+http://localhost:3000
 ```
 
-The chatbot UI is inside:
+## Deploy to Vercel
+
+1. Upload this repository to GitHub.
+2. Import the repository into Vercel.
+3. Deploy as a Next.js project.
+4. Connect your custom domain:
+
+   * mbautomate.com
+   * [www.mbautomate.com](http://www.mbautomate.com)
+
+## Contact Form
+
+The website uses Web3Forms for contact form submissions.
+
+Configure your Access Key in:
 
 ```txt
 app/page.tsx
 ```
+
+Example:
+
+```ts
+data.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY");
+```
+
+Submitted enquiries are delivered directly to:
+
+```txt
+hello@mbautomate.com
+```
+
+## Consultation Booking
+
+The consultation section includes:
+
+* Business enquiry form
+* Lead collection
+* Calendly integration placeholder
+
+Replace:
+
+```ts
+const calendlyUrl = "YOUR_CALENDLY_LINK";
+```
+
+with your personal Calendly booking link.
+
+## Services
+
+MB Automate provides:
+
+* Social media content creation
+* Graphic design for social media
+* Monthly content management
+* Content scheduling
+* Social media strategy support
+* Local business marketing
+
+## Website
+
+https://mbautomate.com
+
