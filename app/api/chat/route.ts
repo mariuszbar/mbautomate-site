@@ -58,63 +58,26 @@ BOOKING::name=[NAME]::contact=[CONTACT]::plan=[PLAN]::datetime=[DATETIME]
 `;
 
 // ─────────────────────────────────────────────
-// GOOGLE CALENDAR — Service Account
+// GOOGLE SHEETS — zapis leadów
 // ─────────────────────────────────────────────
-async function getGoogleAccessToken(): Promise<string> {
-  const email = process.env.GOOGLE_CLIENT_EMAIL!;
-  const rawKey = process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, '\n');
-  const calendarScope = 'https://www.googleapis.com/auth/calendar';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw-5NDrPyD7MhFediGnA1Hy7JMxgq3qS67gSxYm72y_E6tauwtkNgludfiPtGmNX_kC/exec';
 
-  const header = { alg: 'RS256', typ: 'JWT' };
-  const now = Math.floor(Date.now() / 1000);
-  const payload = {
-    iss: email,
-    scope: calendarScope,
-    aud: 'https://oauth2.googleapis.com/token',
-    iat: now,
-    exp: now + 3600,
-  };
-
-  function b64(obj: object) {
-    return Buffer.from(JSON.stringify(obj)).toString('base64url');
+async function saveLeadToSheets(name: string, contact: string, plan: string, datetime: string) {
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email: contact,
+        message: `Plan: ${plan} | Preferred time: ${datetime}`,
+        date: new Date().toISOString(),
+      }),
+    });
+    console.log(`✅ Lead saved to Sheets: ${name} — ${plan}`);
+  } catch (err) {
+    console.error('Sheets save error:', err);
   }
-
-  const unsigned = `${b64(header)}.${b64(payload)}`;
-
-  // Import private key
-  const keyData = rawKey
-    .replace('-----BEGIN PRIVATE KEY-----', '')
-    .replace('-----END PRIVATE KEY-----', '')
-    .replace(/\s/g, '');
-
-  const binaryKey = Buffer.from(keyData, 'base64');
-  const cryptoKey = await crypto.subtle.importKey(
-    'pkcs8',
-    binaryKey,
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-
-  const signature = await crypto.subtle.sign(
-    'RSASSA-PKCS1-v1_5',
-    cryptoKey,
-    Buffer.from(unsigned)
-  );
-
-  const jwt = `${unsigned}.${Buffer.from(signature).toString('base64url')}`;
-
-  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-      assertion: jwt,
-    }),
-  });
-
-  const tokenData = await tokenRes.json();
-  return tokenData.access_token;
 }
 
 // ─────────────────────────────────────────────
@@ -136,62 +99,6 @@ function parseBooking(text: string): BookingData | null {
     plan: match[3].trim(),
     datetime: match[4].trim(),
   };
-}
-
-// ─────────────────────────────────────────────
-// CREATE GOOGLE CALENDAR EVENT
-// ─────────────────────────────────────────────
-async function createCalendarEvent(booking: BookingData): Promise<void> {
-  const calendarId = process.env.GOOGLE_CALENDAR_ID || 'hello@mbautomate.com';
-
-  // Try to parse datetime, fallback to next Monday 10am if unparseable
-  let startDate: Date;
-  try {
-    startDate = new Date(booking.datetime);
-    if (isNaN(startDate.getTime())) throw new Error('invalid');
-  } catch {
-    // Fallback: next Monday 10:00
-    startDate = new Date();
-    startDate.setDate(startDate.getDate() + ((8 - startDate.getDay()) % 7 || 7));
-    startDate.setHours(10, 0, 0, 0);
-  }
-
-  const endDate = new Date(startDate.getTime() + 30 * 60 * 1000); // +30 min
-
-  const event = {
-    summary: `MB Automate — Konsultacja: ${booking.name}`,
-    description: [
-      `Klient: ${booking.name}`,
-      `Kontakt: ${booking.contact}`,
-      `Plan: ${booking.plan}`,
-      `Umówione przez: chatbot mbautomate.com`,
-    ].join('\n'),
-    start: { dateTime: startDate.toISOString(), timeZone: 'Europe/London' },
-    end: { dateTime: endDate.toISOString(), timeZone: 'Europe/London' },
-    colorId: '9', // niebieski — łatwo odróżnić w kalendarzu
-  };
-
-  const token = await getGoogleAccessToken();
-
-  const res = await fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(event),
-    }
-  );
-
-  if (!res.ok) {
-    const err = await res.text();
-    console.error('Calendar error:', err);
-    throw new Error('Calendar API failed');
-  }
-
-  console.log(`✅ Calendar event created for ${booking.name} — ${booking.plan}`);
 }
 
 // ─────────────────────────────────────────────
@@ -263,15 +170,10 @@ export async function POST(req: Request) {
     const openAiData = await openAiRes.json();
     const rawReply: string = openAiData?.choices?.[0]?.message?.content || fallbackReply(lastUserMsg);
 
-    // ── Sprawdź czy jest token BOOKING:: → zapisz do kalendarza ──
+    // ── Sprawdź czy jest token BOOKING:: → zapisz do Sheets ──
     const booking = parseBooking(rawReply);
     if (booking) {
-      try {
-        await createCalendarEvent(booking);
-      } catch (err) {
-        console.error('Failed to create calendar event:', err);
-        // Nie przerywamy — odpowiedź i tak wróci do użytkownika
-      }
+      await saveLeadToSheets(booking.name, booking.contact, booking.plan, booking.datetime);
     }
 
     // ── Usuń token BOOKING:: z odpowiedzi dla użytkownika ──
